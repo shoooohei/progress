@@ -1,5 +1,6 @@
 class ConditionsController < ApplicationController
   before_action :set_condition, only: [:edit, :update, :destroy]
+  before_action :check_logging_in, only: [ :index, :show, :edit, :destroy ]
 
   # GET /conditions
   # GET /conditions.json
@@ -66,5 +67,11 @@ class ConditionsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def condition_params
       params.require(:condition).permit(:progress, :date, :comment, :username, :student_id)
+    end
+
+    def check_logging_in
+      unless logged_in?
+        redirect_to new_session_path
+      end
     end
 end
