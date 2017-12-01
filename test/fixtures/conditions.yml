@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  progress: 1
+  date: 2017-11-28 17:09:03
+  comment: MyText
+  user_id: 1
+
+two:
+  name: MyString
+  progress: 1
+  date: 2017-11-28 17:09:03
+  comment: MyText
+  user_id: 1

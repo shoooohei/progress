@@ -1,0 +1,71 @@
+<p id="notice"><%= notice %></p>
+
+<h4>Name:&nbsp;&nbsp;<strong><%= @student.name %></strong></h4>
+<div class="row">
+  <div class="col-xs-offset-10 co-xs-2">
+    <%= link_to '一覧へ戻る', students_path, class: 'btn btn-default' %>
+  </div>
+</div>
+
+<p>
+  <strong>Progress:</strong>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="<%= current_progress %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= current_progress %>%;">
+      <%= current_progress %>%
+    </div>
+  </div>
+</p>
+<p>&nbsp;</p>
+
+<div class="panel panel-default">
+  <div class="panel-heading"><%= @past_table %></div>
+  <table class="table">
+    <tr>
+      <th>Date</th>
+      <th>User</th>
+      <th>comment</th>
+    </tr>
+    <% @conditions.each do |condition| %>
+      <tr>
+        <td><%= condition.date %></td>
+        <td><%= condition.username %></td>
+        <td><%= condition.comment %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+
+<%= form_with(model: Condition.new, local: true) do |form| %>
+
+  <div class="panel panel-danger">
+    <div class="panel-heading"><%= @new_table %></div>
+    <table class="table">
+      <tr>
+        <%= form.label :progress %>
+        <%= form.select :progress, choose,
+        { include_blank: '選択してください' }  %>
+      </tr>
+
+      <tr>
+        <th>Date</th>
+        <th>User</th>
+        <th>comment</th>
+      </tr>
+
+      <tr>
+        <td><%= form.date_field :date %></td>
+        <td>
+          <%= form.select :username, ['Kawasaki', 'Yamamoto'],
+                        { include_blank: '選択してください' }  %>
+        </td>
+        <td><%= form.text_area :comment %></td>
+      </tr>
+    </table>
+  </div>
+
+  <%= form.hidden_field :student_id, :value => "#{@student.id}" %>
+
+  <%= form.submit 'Add' %>
+
+<% end %>

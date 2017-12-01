@@ -1,0 +1,97 @@
+<h4>Name:&nbsp;&nbsp;<strong><%= @student.name %></strong></h4>
+<div class="row">
+  <div class="col-xs-offset-10 co-xs-2">
+    <%= link_to '一覧へ戻る', students_path, class: 'btn btn-default' %>
+  </div>
+</div>
+
+<p>
+  <strong>Progress:</strong>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="<%= @achievement %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @achievement %>%;">
+      <%= @achievement %>%
+    </div>
+  </div>
+</p>
+<p>&nbsp;</p>
+
+<div class="panel panel-default row">
+  <div class="panel-heading"><%= @past_table %></div>
+  <table class="table">
+    <tr>
+      <th class="col-xs-1">Date</th>
+      <th class="col-xs-1">User</th>
+      <th class="col-xs-3">Progress</th>
+      <th class="col-xs-5">comment</th>
+      <th class="col-xs-1">&nbsp;</th>
+      <th class="col-xs-1">&nbsp;</th>
+    </tr>
+    <% @conditions.each do |condition| %>
+      <% progress_at_that_time = choose.key(condition.progress) %>
+      <tr>
+        <td><%= condition.date %></td>
+        <td><%= condition.username %></td>
+        <td><%= progress_at_that_time %></td>
+        <td><p class="comment"><%= condition.comment %></p></td>
+        <% if condition.username == current_user.username %>
+          <td><%= link_to 'Edit',
+                  edit_condition_path(condition.id),
+                  class: 'btn btn-success' %></td>
+          <td><%= link_to 'Delete',
+                  condition_path(condition.id),
+                  data: { confirm: "本当に削除してもよろしいですか？"},
+                  method: :delete, class: 'btn btn-warning' %></td>
+        <% else %>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+<% if @new_condition.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= @new_condition.errors.count %>件のエラーがあります。</h2>
+    <ul>
+      <% @new_condition.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with(model: @new_condition, local: true) do |form| %>
+
+  <div class="panel panel-danger row">
+    <div class="panel-heading"><%= @new_table %></div>
+    <table class="table">
+      <tr>
+        <th class="col-xs-2">Date</th>
+        <th class="col-xs-4">Progress</th>
+        <th class="col-xs-6">comment</th>
+      </tr>
+
+      <tr>
+        <td><%= form.date_field :date %></td>
+        <td>
+          <div class="row">
+            <%= form.select :progress, choose,
+            { include_blank: '選択してください' }, class: 'col-xs-11'  %>
+          </div>
+        </td>
+        <td>
+          <div class="row">
+            <%= form.text_area :comment, class: "comment col-xs-11" %>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <%= form.hidden_field :username, :value => "#{current_user.username}" %>
+  <%= form.hidden_field :student_id, :value => "#{@student.id}" %>
+
+  <%= form.submit 'Add' %>
+
+<% end %>

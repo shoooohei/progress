@@ -1,0 +1,32 @@
+<div class="panel panel-default">
+  <div class="panel-heading"><h1>All Students</h1></div>
+  <table class="table">
+    <tr>
+      <th class="col-xs-3">Name</th>
+      <th class="col-xs-5">Progress</th>
+      <th  class="col-xs-4">Comment</th>
+    </tr>
+    <% @student_ids_ordered_by_progress.each do |student_id| %>
+      <% student_conditions = Student.find(student_id).conditions.order(date: :desc) %>
+      <% progress = student_conditions.maximum(:progress) %>
+      <% achievement = (progress * 100 / choose.keys.length).round %>
+      <tr>
+        <td><%= link_to "#{Student.find(student_id).name}", student_path(student_id) %></td>
+        <td>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="<%= achievement %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= achievement %>%;">
+              <%= achievement %>%
+            </div>
+          </div>
+        </td>
+        <td>
+          <p class="comment"><%= student_conditions.first.comment %></p>
+          <p class="date"><%= student_conditions.first.date %>&nbsp;&nbsp;<%= student_conditions.first.username %></p>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+<br>
+
+<%= link_to 'New Student', new_student_path, class: 'btn btn-default' %>

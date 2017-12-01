@@ -1,0 +1,45 @@
+<h4>Editing Condition</h4>
+<h4>Name:&nbsp;&nbsp;<strong><%= @name %></strong></h4>
+
+<%= form_with(model: @condition, local: true, url: condition_path) do |form| %>
+  <% if @condition.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@condition.errors.count, "error") %> prohibited this condition from being saved:</h2>
+
+      <ul>
+      <% @condition.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="field">
+    <%= form.label :date %>
+    <%= form.date_field :date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :progress %>
+    <%= form.select :progress, choose,
+    { include_blank: '選択してください' }  %>
+  </div>
+
+  <div class="field">
+    <%= form.label :comment %>
+    <%= form.text_area :comment %>
+  </div>
+
+  <%= form.hidden_field :username, :value => "#{current_user.username}" %>
+  <%= form.hidden_field :student_id, :value => "#{@condition.student_id}" %>
+
+
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+
+<% end %>
+
+<%= link_to 'Back', student_path(@condition.student_id) %>
