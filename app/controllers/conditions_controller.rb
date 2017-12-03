@@ -25,11 +25,17 @@ class ConditionsController < ApplicationController
   # POST /conditions
   # POST /conditions.json
   def create
-    @new_condition = Condition.new(condition_params)
-      if @new_condition.save
+    @condition = Condition.new(condition_params)
+      if @condition.save
         redirect_to student_path(params[:condition][:student_id]), notice: 'new Condition was successfully created.'
       else
-        redirect_to student_path(params[:condition][:student_id]), @new_condition
+        @student = Student.find(params[:condition][:student_id])
+        @conditions = @student.conditions.order(date: :desc)
+        progress = (@student.conditions).maximum(:progress)
+        @achievement = (progress * 100 / choose.keys.length).round
+        @past_table = "Past Record"
+        @new_table = "New Record"
+        render 'students/show'
       end
   end
 
@@ -44,7 +50,7 @@ class ConditionsController < ApplicationController
       if @condition.update(condition_params)
         redirect_to student_path(params[:condition][:student_id]), notice: 'Condition was successfully updated.'
       else
-        render :edit
+        render 'edit'
       end
   end
 
@@ -69,9 +75,4 @@ class ConditionsController < ApplicationController
       params.require(:condition).permit(:progress, :date, :comment, :username, :student_id)
     end
 
-    def check_logging_in
-      unless logged_in?
-        redirect_to new_session_path
-      end
-    end
 end

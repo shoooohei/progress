@@ -50,18 +50,18 @@
   </table>
 </div>
 
-<% if @new_condition.errors.any? %>
+<% if @condition.errors.any? %>
   <div id="error_explanation">
-    <h2><%= @new_condition.errors.count %>件のエラーがあります。</h2>
+    <h2><%= @condition.errors.count %>件のエラーがあります。</h2>
     <ul>
-      <% @new_condition.full_messages.each do |msg| %>
+      <% @condition.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
     </ul>
   </div>
 <% end %>
 
-<%= form_with(model: @new_condition, local: true) do |form| %>
+<%= form_with(model: @condition, local: true) do |form| %>
 
   <div class="panel panel-danger row">
     <div class="panel-heading"><%= @new_table %></div>

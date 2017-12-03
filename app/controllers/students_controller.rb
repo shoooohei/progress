@@ -5,11 +5,13 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.json
   def index
-    all_conditions = Condition.order(progress: :desc)
+    #progressが大きい順に全てのconditionsを取得
+    all_conditions = Condition.all.order(progress: :desc)
+    #ビューでstudent_idを元にそのstudentのprogressが一番高いレコードを取ってくるために、まずはコントローラーから全てのstudent_idを取ってきて、配列に入れていく。progressが一番高いレコードから入れていくので、必然的にprogressが高い順にstudent_idが入るはずである。
     @student_ids_ordered_by_progress = Array.new
     all_conditions.each do |condition|
       if @student_ids_ordered_by_progress.index(condition.student_id) == nil
-       @student_ids_ordered_by_progress << condition.student_id
+      @student_ids_ordered_by_progress << condition.student_id
       end
     end
   end
@@ -17,7 +19,7 @@ class StudentsController < ApplicationController
   # GET /students/1
   # GET /students/1.json
   def show
-    @new_condition = Condition.new
+    @condition = Condition.new
     @conditions = @student.conditions.order(date: :desc)
     progress = (@student.conditions).maximum(:progress)
     @achievement = (progress * 100 / choose.keys.length).round
@@ -37,17 +39,20 @@ class StudentsController < ApplicationController
   # POST /students
   def create
     @student = Student.new(student_params)
-      if @student.save
-        condition = Condition.new
-        condition.student_id = @student.id
-        condition.progress = 0
-        condition.date = Date.today
-        condition.comment = "Account created"
-        condition.save
-        redirect_to student_path(@student.id), notice: 'Student was successfully created'
-      else
-        render :new
-      end
+    if @student.save
+      #アソシエーションを使って"new"にするとそれに紐づいたnewインスタンスも作れる
+      condition = @student.conditions.new
+      #下記と同義
+      # condition = Condition.new
+      # condition.student_id = @student.id
+      condition.progress = 0
+      condition.date = Date.today
+      condition.comment = "Account created"
+      condition.save
+      redirect_to student_path(@student.id), notice: 'Student was successfully created'
+    else
+      render 'new'
+    end
   end
 
 
@@ -78,9 +83,4 @@ class StudentsController < ApplicationController
       params.require(:student).permit(:name)
     end
 
-    def check_logging_in
-      unless logged_in?
-        redirect_to new_session_path
-      end
-    end
 end
