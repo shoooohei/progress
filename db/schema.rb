@@ -16,12 +16,12 @@ ActiveRecord::Schema.define(version: 20171201084853) do
   enable_extension "plpgsql"
 
   create_table "conditions", force: :cascade do |t|
-    t.integer "progress"
-    t.text "comment"
+    t.integer "progress", default: 0
+    t.text "comment", default: "Account created"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "student_id"
-    t.date "date"
+    t.date "date", default: "2017-12-04"
     t.string "username"
   end
 
