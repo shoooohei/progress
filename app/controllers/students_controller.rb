@@ -45,9 +45,6 @@ class StudentsController < ApplicationController
       #下記と同義
       # condition = Condition.new
       # condition.student_id = @student.id
-      condition.progress = 0
-      condition.date = Date.today
-      condition.comment = "Account created"
       condition.save
       redirect_to student_path(@student.id), notice: 'Student was successfully created'
     else
