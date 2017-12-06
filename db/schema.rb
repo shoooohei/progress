@@ -10,19 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171201084853) do
+ActiveRecord::Schema.define(version: 20171206061218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "conditions", force: :cascade do |t|
     t.integer "progress", default: 0
-    t.text "comment", default: "Account created"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "student_id"
-    t.date "date", default: "2017-12-04"
     t.string "username"
+    t.date "date"
+    t.text "comment"
   end
 
   create_table "students", force: :cascade do |t|
