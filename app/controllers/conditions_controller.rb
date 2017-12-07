@@ -32,7 +32,7 @@ class ConditionsController < ApplicationController
         @student = Student.find(params[:condition][:student_id])
         @conditions = @student.conditions.order(date: :desc)
         progress = (@student.conditions).maximum(:progress)
-        @achievement = (progress * 100 / choose.keys.length).round
+        @achievement = (progress * 100 / number_of_pages).round
         @past_table = "Past Record"
         @new_table = "New Record"
         render 'students/show'
