@@ -35,8 +35,6 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'bcrypt', '3.1.11'
 
-gem 'rails_12factor', group: :production
-
 
 
 group :development, :test do
