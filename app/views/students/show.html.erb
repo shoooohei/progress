@@ -27,6 +27,7 @@
       <th class="col-xs-1">&nbsp;</th>
     </tr>
     <% @conditions.each do |condition| %>
+      <!-- 取り出されたレコードのprogressの数字からタイトルを検索 -->
       <% progress_at_that_time = choose.key(condition.progress) %>
       <tr>
         <td><%= condition.date %></td>

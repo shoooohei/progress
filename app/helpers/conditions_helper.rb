@@ -40,11 +40,12 @@ module ConditionsHelper
     return material_lists
   end
 
-  #新しくconditionレコードを作成するときの選択肢。どこまで終わったかを選択
+  # 新しくconditionレコードを作成するときの選択肢。どこまで終わったかを選択
   def choose
     original = "doc/english_original_lists.txt"
     return make_lists(original)
   end
+
 
   #全体の進捗を計算するために全体のページ数を計算
   def number_of_pages
