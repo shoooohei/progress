@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
       redirect_to students_path
     else
       flash[:danger] = 'You have failed logging in.'
-      render 'new'
+      redirect_to new_session_path
     end
   end
 
