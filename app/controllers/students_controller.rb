@@ -6,7 +6,7 @@ class StudentsController < ApplicationController
   # GET /students.json
   def index
     #progressが大きい順に全てのconditionsを取得
-    all_conditions = Condition.all.order(progress: :desc)
+    all_conditions = Condition.where.not(progress: nil).order(progress: :desc)
     #ビューでstudent_idを元にそのstudentのprogressが一番高いレコードを取ってくるために、まずはコントローラーから全てのstudent_idを取ってきて、配列に入れていく。progressが一番高いレコードから入れていくので、必然的にprogressが高い順にstudent_idが入るはずである。
     @student_ids_ordered_by_progress = Array.new
     all_conditions.each do |condition|
